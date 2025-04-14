@@ -1,19 +1,14 @@
-# PlanningToolbox
-
-# MVP requirments:
-
-Here's a clear and actionable **project plan** for the "Niezbędnik Ucznia" (Student Toolkit) system, written from the perspective of a professional software engineer.
+Here's a revised and professional **project plan** for an **Athlete Toolkit** application, refactored from the original "Niezbędnik Ucznia" idea.
 
 ---
 
 ## 🎯 **MVP Goal**
-Create a desktop application with:
-- User login & registration
-- Editable class schedule (plan lekcji)
-- Gradebook (dziennik ocen)
-- Basic performance statistics
-- Export functionality (PDF or CSV)
-- Persistent, encrypted user data via ORM
+Build a desktop application that allows athletes to:
+- Log and track workouts and nutrition
+- Monitor performance statistics
+- Export training logs and stats
+- Register securely and store personal performance data encrypted
+- Access it all through a clean GUI interface
 
 ---
 
@@ -25,122 +20,122 @@ Create a desktop application with:
 ```
 
 ### Components:
-1. **Frontend (GUI)** – Simple, interactive interface (Tkinter or PyQt)
-2. **Application Logic** – Handles user interaction, input validation, business logic
-3. **Database Layer** – Uses ORM (e.g., SQLAlchemy)
-4. **Export Module** – PDF and CSV generation
-5. **Security** – Password hashing + encrypted data
+1. **Frontend (GUI)** – For workout/nutrition input and viewing stats
+2. **Core Logic** – Training session tracking, statistics generation
+3. **Database Layer** – ORM-based persistence
+4. **Export Module** – Workout logs, nutrition, and stats to PDF/CSV
+5. **Security** – User login, hashed credentials, encrypted performance data
 
 ---
 
 ## 🧰 **Suggested Tech Stack**
 | Layer           | Technology           |
 |----------------|----------------------|
-| GUI            | Tkinter (standard) or PyQt5 (more modern) |
+| GUI            | Tkinter or PyQt5     |
 | ORM            | SQLAlchemy           |
-| DB Engine      | SQLite (for MVP)     |
-| Security       | `bcrypt`, `cryptography` for data encryption |
-| Export         | `reportlab` for PDF, `csv` module for CSV |
-| Documentation  | `pdoc` or `Sphinx` + `LaTeX`/`wkhtmltopdf` for PDF |
+| DB Engine      | SQLite               |
+| Security       | `bcrypt`, `cryptography` |
+| Export         | `reportlab` for PDF, `csv` for CSV |
+| Documentation  | `pdoc`, `Sphinx`, `wkhtmltopdf` |
+| Charts (Optional) | `matplotlib` or `plotly` |
 | Version Control| Git + GitHub         |
-| Packaging      | `pyinstaller` (optional for .exe) |
 
 ---
 
 ## 📌 **Task Breakdown**
 
 ### 🔐 User Authentication
-- [ ] Register new user (hashed password, encrypted profile data)
-- [ ] Login with validation
-- [ ] Save user sessions (optional)
+- [ ] Register/login (secure passwords + encrypted data)
+- [ ] Store user profile (age, height, weight, goals)
 
-### 📅 Plan Lekcji (Schedule)
-- [ ] GUI to add/edit/delete subjects per day
-- [ ] Save schedule to DB
+### 🏋️ Training Log
+- [ ] Log daily workouts (type, duration, intensity, notes)
+- [ ] Track strength/power/cardio metrics
+- [ ] Edit/delete past entries
 - [ ] Export to PDF/CSV
 
-### 📓 Dziennik Ocen (Gradebook)
-- [ ] Add/edit/delete grades by subject
-- [ ] Track dates, grade types
+### 🍽️ Nutrition Log (Optional in MVP)
+- [ ] Log meals/macros
+- [ ] View weekly/daily calorie intake
 - [ ] Export to PDF/CSV
 
-### 📊 Statystyki
-- [ ] Average grade per subject
-- [ ] Overall average
-- [ ] Graphs (optional with `matplotlib`)
-- [ ] Export to PDF
+### 📊 Statistics
+- [ ] Weekly/monthly training volume
+- [ ] Average workout intensity
+- [ ] Progress over time (e.g., PR tracking)
+- [ ] Graphs for visualization
 
 ### 📂 Export Modules
-- [ ] PDF generation for each module
-- [ ] CSV fallback
+- [ ] Training log to PDF/CSV
+- [ ] Stats summary to PDF
 
 ### 💾 Persistence Layer
-- [ ] Define ORM models: User, Schedule, Grade
-- [ ] Encrypt sensitive fields (user data)
-- [ ] Initialize and migrate DB
+- [ ] Models: User, WorkoutLog, (NutritionEntry - optional)
+- [ ] Encrypt user profile data
+- [ ] ORM setup and migrations
 
 ### 📘 Documentation
-- [ ] Docstrings for all methods/classes
-- [ ] Generate HTML/PDF docs with `pdoc` or `Sphinx`
-- [ ] README with usage instructions
+- [ ] Docstrings and API docs
+- [ ] PDF documentation generated with `pdoc` or `Sphinx`
 
 ### 🚀 Deployment
-- [ ] Package app
-- [ ] Upload to GitHub
-- [ ] Include documentation and example DB file
+- [ ] Package with pyinstaller
+- [ ] Push code and docs to GitHub
 
 ---
 
 ## 📈 **Development Steps**
 
 ### Week 1 – Setup & Auth
-- Initialize GitHub repo
-- Set up project structure and virtual environment
-- Implement user registration/login (with bcrypt)
-- Create basic GUI layout
+- Project scaffolding + virtual environment
+- User registration/login (bcrypt + cryptography)
+- Basic GUI setup
 
-### Week 2 – Schedule & Gradebook
-- Build GUI + DB logic for plan lekcji
-- Add gradebook functionality
-- Connect DB with GUI
+### Week 2 – Workout Log
+- GUI to add/edit workouts
+- Connect workout model to DB
+- List/display workout entries
 
-### Week 3 – Statistics & Export
-- Implement stats module
-- Add PDF/CSV export (use dummy data first)
-- Finalize DB models and test encryption
+### Week 3 – Stats + Export
+- Aggregate stats (training volume, PRs)
+- PDF/CSV export for logs and stats
+- Optional: Add graphing
 
-### Week 4 – Polishing & Documentation
-- Final GUI improvements
-- Generate documentation and convert to PDF
-- Package everything and push to GitHub
+### Week 4 – Finalize & Docs
+- Refine GUI
+- Polish features
+- Generate docs (PDF)
+- Push final version to GitHub
 
 ---
 
 ## 📁 Suggested Folder Structure
 ```
-NiezbednikUcznia/
+AthleteToolkit/
 ├── main.py
 ├── gui/
 │   ├── login.py
-│   ├── schedule.py
-│   ├── grades.py
+│   ├── dashboard.py
+│   ├── workouts.py
 │   └── stats.py
 ├── models/
 │   ├── user.py
-│   ├── schedule.py
-│   └── grade.py
+│   └── workout.py
 ├── services/
 │   ├── auth.py
 │   ├── encryption.py
 │   └── export.py
 ├── docs/
-│   └── generated_docs.pdf
+│   └── athlete_toolkit_docs.pdf
 ├── README.md
 └── requirements.txt
 ```
 
 ---
 
-Would you like a starter template in Python or the GitHub repo structure zipped up to kick things off?
+Let me know if you want:
+- A Python boilerplate to get started
+- A GitHub-ready starter repo
+- A specific UI flow design or mockup
 
-
+I can also provide code examples for any module on request.
