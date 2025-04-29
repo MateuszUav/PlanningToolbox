@@ -1,135 +1,176 @@
+---
+
+# 📄 Athlete Toolbox MVP: Development Plan
 
 ---
 
-## 🎯 **MVP Goal**
-Build a desktop application that allows athletes to:
-- Log and track workouts and nutrition
-- Monitor performance statistics
-- Export training logs and stats
-- Register securely and store personal performance data encrypted
-- Access it all through a clean GUI interface
+## 🥅 MVP Goals (User Features)
+
+| ID | Feature | Description |
+|:-|:-|:-|
+| 1 | User Login | Secure account creation, login, logout |
+| 2 | Workout Logging | Add, view, edit training sessions |
+| 3 | PR Tracking | Save, update personal bests |
+| 6 | Goal Tracker | Create/track training goals |
+| 15 | Data Export | Export workouts and PRs to CSV |
+
+🔵 *Bonus (future-ready)*: Workout import (Garmin first, later other apps).
 
 ---
 
-## 🧱 **High-Level Architecture**
+## 🏛️ High-Level Architecture
+
+- **Frontend (GUI)** → User Interface (PyQt6 or Tkinter)
+- **Backend (Core Logic)** → Python modules (services, controllers)
+- **Database (Storage)** → SQLite local file (`athlete_toolbox.db`)
+- **External Integration** → Garmin `.fit` or `.tcx` file parser
+- **Security** → Password hashing (bcrypt)
+
 ```
-[GUI Frontend] ←→ [App Logic (Controllers)] ←→ [Database via ORM]
-      ↑                                         ↓
- [PDF/CSV Export]                        [Encrypted User Data]
+GUI  <--->  Core Logic  <--->  SQLite DB
+                  |
+             External Data (Garmin Files)
 ```
 
-### Components:
-1. **Frontend (GUI)** – For workout/nutrition input and viewing stats
-2. **Core Logic** – Training session tracking, statistics generation
-3. **Database Layer** – ORM-based persistence
-4. **Export Module** – Workout logs, nutrition, and stats to PDF/CSV
-5. **Security** – User login, hashed credentials, encrypted performance data
+---
+
+## 🛠️ Tech Stack
+
+| Area | Tech |
+|:-|:-|
+| Language | Python 3.12+ |
+| GUI | PyQt6 (preferred) or Tkinter (simpler) |
+| Database | SQLite (local `.db` file) |
+| ORM | Tiny ORM layer or raw SQL with helpers |
+| Auth | bcrypt for password hashing |
+| Export | pandas for CSV generation |
+| Parsing Garmin Files | fitparse or tcxparser (open-source libs) |
+| Charts (optional) | matplotlib or plotly (for future graphs) |
+| Dev Tools | venv (virtual environment), Git |
 
 ---
 
-## 🧰 **Suggested Tech Stack**
-| Layer           | Technology           |
-|----------------|----------------------|
-| GUI            | Tkinter or PyQt5     |
-| ORM            | SQLAlchemy           |
-| DB Engine      | SQLite               |
-| Security       | `bcrypt`, `cryptography` |
-| Export         | `reportlab` for PDF, `csv` for CSV |
-| Documentation  | `pdoc`, `Sphinx`, `wkhtmltopdf` |
-| Charts (Optional) | `matplotlib` or `plotly` |
-| Version Control| Git + GitHub         |
+## 📚 Database Schema (First Draft)
+
+### Table: `users`
+| Column | Type | Notes |
+|:-|:-|:-|
+| id | INTEGER PRIMARY KEY AUTOINCREMENT |
+| username | TEXT UNIQUE NOT NULL |
+| password_hash | TEXT NOT NULL |
+
+### Table: `workouts`
+| Column | Type | Notes |
+|:-|:-|:-|
+| id | INTEGER PRIMARY KEY AUTOINCREMENT |
+| user_id | INTEGER (FK -> users.id) |
+| date | TEXT (ISO string) |
+| workout_type | TEXT |
+| description | TEXT |
+| duration_minutes | INTEGER |
+| distance_km | REAL (optional) |
+
+### Table: `personal_records`
+| Column | Type | Notes |
+|:-|:-|:-|
+| id | INTEGER PRIMARY KEY AUTOINCREMENT |
+| user_id | INTEGER (FK -> users.id) |
+| exercise | TEXT |
+| record_value | REAL |
+| record_date | TEXT |
+
+### Table: `goals`
+| Column | Type | Notes |
+|:-|:-|:-|
+| id | INTEGER PRIMARY KEY AUTOINCREMENT |
+| user_id | INTEGER (FK -> users.id) |
+| goal_description | TEXT |
+| target_value | REAL |
+| current_progress | REAL |
+| deadline | TEXT |
 
 ---
 
-## 📌 **Task Breakdown**
+## 🏗️ Development Roadmap (Step-by-Step)
 
-### 🔐 User Authentication
-- [ ] Register/login (secure passwords + encrypted data)
-- [ ] Store user profile (age, height, weight, goals)
+### Phase 1: Setup
+- [ ] Initialize Git repo, create project structure
+- [ ] Set up virtual environment (`python -m venv venv`)
+- [ ] Install needed libraries (`pip install pyqt6 bcrypt pandas`)
 
-### 🏋️ Training Log
-- [ ] Log daily workouts (type, duration, intensity, notes)
-- [ ] Track strength/power/cardio metrics
-- [ ] Edit/delete past entries
-- [ ] Export to PDF/CSV
+### Phase 2: Database + Core Logic
+- [ ] Create SQLite DB (`athlete_toolbox.db`)
+- [ ] Build database module (connection handler, CRUD functions)
+- [ ] Build auth module (bcrypt password hashing and checking)
 
-### 🍽️ Nutrition Log (Optional in MVP)
-- [ ] Log meals/macros
-- [ ] View weekly/daily calorie intake
-- [ ] Export to PDF/CSV
+### Phase 3: GUI - User Management
+- [ ] Build Login Window
+- [ ] Build Register Window
+- [ ] Session handling (track current logged user)
 
-### 📊 Statistics
-- [ ] Weekly/monthly training volume
-- [ ] Average workout intensity
-- [ ] Progress over time (e.g., PR tracking)
-- [ ] Graphs for visualization
+### Phase 4: Core App GUI
+- [ ] Workout Log Window (Add, Edit, View workouts)
+- [ ] PR Tracking Window (Add, View PRs)
+- [ ] Goal Tracker Window (Create goal, view progress)
+- [ ] Export Window (Export workouts/PRs to CSV)
 
-### 📂 Export Modules
-- [ ] Training log to PDF/CSV
-- [ ] Stats summary to PDF
+### Phase 5: Garmin Import (Prototype version)
+- [ ] Allow user to select `.fit` or `.tcx` file
+- [ ] Parse basic info (date, distance, duration)
+- [ ] Auto-add into workouts table
 
-### 💾 Persistence Layer
-- [ ] Models: User, WorkoutLog, (NutritionEntry - optional)
-- [ ] Encrypt user profile data
-- [ ] ORM setup and migrations
-
-### 📘 Documentation
-- [ ] Docstrings and API docs
-- [ ] PDF documentation generated with `pdoc` or `Sphinx`
-
-### 🚀 Deployment
-- [ ] Package with pyinstaller
-- [ ] Push code and docs to GitHub
+### Phase 6: Polish + QA
+- [ ] Basic form validation
+- [ ] Error messages and success popups
+- [ ] DB error handling
+- [ ] Light aesthetic tuning of GUI (alignments, colors)
 
 ---
 
-## 📈 **Development Steps**
+## 📂 Project Structure 
 
-### Week 1 – Setup & Auth
-- Project scaffolding + virtual environment
-- User registration/login (bcrypt + cryptography)
-- Basic GUI setup
-
-### Week 2 – Workout Log
-- GUI to add/edit workouts
-- Connect workout model to DB
-- List/display workout entries
-
-### Week 3 – Stats + Export
-- Aggregate stats (training volume, PRs)
-- PDF/CSV export for logs and stats
-- Optional: Add graphing
-
-### Week 4 – Finalize & Docs
-- Refine GUI
-- Polish features
-- Generate docs (PDF)
-- Push final version to GitHub
-
----
-
-## 📁 Suggested Folder Structure
 ```
-AthleteToolkit/
-├── main.py
+athlete_toolbox/
+│
+├── main.py            # Entry point
+├── db.py              # Database connection and models
+├── auth.py            # Login/Registration logic
 ├── gui/
-│   ├── login.py
-│   ├── dashboard.py
-│   ├── workouts.py
-│   └── stats.py
-├── models/
-│   ├── user.py
-│   └── workout.py
-├── services/
-│   ├── auth.py
-│   ├── encryption.py
-│   └── export.py
-├── docs/
-│   └── athlete_toolkit_docs.pdf
-├── README.md
-└── requirements.txt
+│    ├── login_window.py
+│    ├── register_window.py
+│    ├── main_app_window.py
+│    ├── workout_window.py
+│    ├── pr_window.py
+│    ├── goals_window.py
+│    └── export_window.py
+├── utils/
+│    ├── garmin_parser.py  # Garmin file parsing logic
+│    └── csv_exporter.py   # Export helpers
+├── assets/              # Icons, logos (optional)
+└── README.md
 ```
 
 ---
 
+## 🧩 Libraries to Install Immediately
 
+```bash
+pip install pyqt6 bcrypt pandas fitparse
+```
+
+Optionally:
+```bash
+pip install matplotlib
+```
+
+---
+
+## 🧠 Smart Notes
+
+- Use **raw SQL** for MVP — no need for heavy ORM.
+- Start with **Login/Register** FIRST — everything depends on users.
+- **Hardcode Garmin imports** at first (one format), expand later.
+- Build **one window fully**, then duplicate for others.
+- Keep **DB schema very simple** — overcomplication = death.
+
+---
