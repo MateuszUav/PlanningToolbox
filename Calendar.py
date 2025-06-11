@@ -1,7 +1,9 @@
 from tkcalendar import Calendar
 from tkinter import filedialog
 import csv
-
+DB_USER = "s30765"
+DB_PASSWORD = "oracle12"
+DB_DSN = "db-oracle.pjwstk.edu.pl:1521/baza.pjwstk.edu.pl"
 def show_calendar_window():
     def on_date_selected(event):
         selected_date = cal.selection_get()

@@ -1,0 +1,37 @@
+
+
+### 📁 Expected CSV Format
+
+Each CSV file should have a header and follow this format:
+
+#### `users.csv`
+
+```
+username,email,weight_kg,height_cm,birth_date
+mimi,mimi@example.com,87.5,180,2003-04-21
+```
+
+#### `workouts.csv`
+
+```
+user_id,workout_date,type,description,duration_min,calories_burned
+1,2025-05-18,Strength,Squat and DL,70,600
+```
+
+#### `prs.csv`
+
+```
+user_id,exercise_name,record_value,unit,record_date
+1,Deadlift,200,kg,2025-03-20
+```
+
+#### `goals.csv`
+
+```
+user_id,title,target_value,current_value,unit,deadline,achieved
+1,3km under 12 minutes,11:59,12:45,minutes,2025-06-15,N
+```
+
+---
+
+Let me know if you want real-time data validation, progress bars, or integration with a GUI like Tkinter or PyQt later.
