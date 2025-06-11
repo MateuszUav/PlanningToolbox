@@ -1,5 +1,3 @@
-Here’s a clean and professional `README.md` tailored for a GitHub repository based on your uploaded files:
-
 ---
 
 # 🏋️ Fitness Tracker System (Oracle DB + Python + Tkinter GUI)
@@ -138,5 +136,3 @@ mimi,mimi@example.com,87.5,180,2003-04-21
 Built by a CS & Robotics student as a modular backend + GUI solution for tracking personal fitness metrics using Oracle DB.
 
 ---
-
-Would you like me to export this as a `README.md` file now?
