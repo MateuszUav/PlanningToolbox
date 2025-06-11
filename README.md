@@ -1,176 +1,142 @@
----
-
-# 📄 Athlete Toolbox MVP: Development Plan
+Here’s a clean and professional `README.md` tailored for a GitHub repository based on your uploaded files:
 
 ---
 
-## 🥅 MVP Goals (User Features)
+# 🏋️ Fitness Tracker System (Oracle DB + Python + Tkinter GUI)
 
-| ID | Feature | Description |
-|:-|:-|:-|
-| 1 | User Login | Secure account creation, login, logout |
-| 2 | Workout Logging | Add, view, edit training sessions |
-| 3 | PR Tracking | Save, update personal bests |
-| 6 | Goal Tracker | Create/track training goals |
-| 15 | Data Export | Export workouts and PRs to CSV |
-
-🔵 *Bonus (future-ready)*: Workout import (Garmin first, later other apps).
+A modular fitness tracking system built using Python and Oracle SQL. It supports user registration, goal tracking, workout logs, personal records, and data import/export through CSV—all wrapped with a simple Tkinter GUI.
 
 ---
 
-## 🏛️ High-Level Architecture
+## 📦 Features
 
-- **Frontend (GUI)** → User Interface (PyQt6 or Tkinter)
-- **Backend (Core Logic)** → Python modules (services, controllers)
-- **Database (Storage)** → SQLite local file (`athlete_toolbox.db`)
-- **External Integration** → Garmin `.fit` or `.tcx` file parser
-- **Security** → Password hashing (bcrypt)
-
-```
-GUI  <--->  Core Logic  <--->  SQLite DB
-                  |
-             External Data (Garmin Files)
-```
+* ✅ User registration & login (with SHA-256 password hashing)
+* 📊 Track workouts, personal records (PRs), and goals
+* 🧾 Import/export data to/from CSV
+* 🧑‍💻 Clean object-oriented design using a custom `FitnessDBInserter` class
+* 💻 GUI with login/register functionality (Tkinter)
+* 📁 Compatible CSV schema for data migration
 
 ---
 
-## 🛠️ Tech Stack
+## 📁 Folder Contents
 
-| Area | Tech |
-|:-|:-|
-| Language | Python 3.12+ |
-| GUI | PyQt6 (preferred) or Tkinter (simpler) |
-| Database | SQLite (local `.db` file) |
-| ORM | Tiny ORM layer or raw SQL with helpers |
-| Auth | bcrypt for password hashing |
-| Export | pandas for CSV generation |
-| Parsing Garmin Files | fitparse or tcxparser (open-source libs) |
-| Charts (optional) | matplotlib or plotly (for future graphs) |
-| Dev Tools | venv (virtual environment), Git |
-
----
-
-## 📚 Database Schema (First Draft)
-
-### Table: `users`
-| Column | Type | Notes |
-|:-|:-|:-|
-| id | INTEGER PRIMARY KEY AUTOINCREMENT |
-| username | TEXT UNIQUE NOT NULL |
-| password_hash | TEXT NOT NULL |
-
-### Table: `workouts`
-| Column | Type | Notes |
-|:-|:-|:-|
-| id | INTEGER PRIMARY KEY AUTOINCREMENT |
-| user_id | INTEGER (FK -> users.id) |
-| date | TEXT (ISO string) |
-| workout_type | TEXT |
-| description | TEXT |
-| duration_minutes | INTEGER |
-| distance_km | REAL (optional) |
-
-### Table: `personal_records`
-| Column | Type | Notes |
-|:-|:-|:-|
-| id | INTEGER PRIMARY KEY AUTOINCREMENT |
-| user_id | INTEGER (FK -> users.id) |
-| exercise | TEXT |
-| record_value | REAL |
-| record_date | TEXT |
-
-### Table: `goals`
-| Column | Type | Notes |
-|:-|:-|:-|
-| id | INTEGER PRIMARY KEY AUTOINCREMENT |
-| user_id | INTEGER (FK -> users.id) |
-| goal_description | TEXT |
-| target_value | REAL |
-| current_progress | REAL |
-| deadline | TEXT |
+| File                 | Description                                         |
+| -------------------- | --------------------------------------------------- |
+| `main.py`            | Entry point placeholder                             |
+| `gui.py`             | Tkinter-based GUI for login/registration            |
+| `db_inserter.py`     | Class for inserting data into Oracle DB             |
+| `import.py`          | Imports data from CSV to DB                         |
+| `export.py`          | Exports data from DB to CSV                         |
+| `fitness_schema.sql` | Full Oracle SQL schema for the fitness database     |
+| `inserts.sql`        | Sample data inserts                                 |
+| `expectedCSV.txt`    | Shows expected CSV file structure for import/export |
 
 ---
 
-## 🏗️ Development Roadmap (Step-by-Step)
+## 🧠 Schema Overview
 
-### Phase 1: Setup
-- [ ] Initialize Git repo, create project structure
-- [ ] Set up virtual environment (`python -m venv venv`)
-- [ ] Install needed libraries (`pip install pyqt6 bcrypt pandas`)
-
-### Phase 2: Database + Core Logic
-- [ ] Create SQLite DB (`athlete_toolbox.db`)
-- [ ] Build database module (connection handler, CRUD functions)
-- [ ] Build auth module (bcrypt password hashing and checking)
-
-### Phase 3: GUI - User Management
-- [ ] Build Login Window
-- [ ] Build Register Window
-- [ ] Session handling (track current logged user)
-
-### Phase 4: Core App GUI
-- [ ] Workout Log Window (Add, Edit, View workouts)
-- [ ] PR Tracking Window (Add, View PRs)
-- [ ] Goal Tracker Window (Create goal, view progress)
-- [ ] Export Window (Export workouts/PRs to CSV)
-
-### Phase 5: Garmin Import (Prototype version)
-- [ ] Allow user to select `.fit` or `.tcx` file
-- [ ] Parse basic info (date, distance, duration)
-- [ ] Auto-add into workouts table
-
-### Phase 6: Polish + QA
-- [ ] Basic form validation
-- [ ] Error messages and success popups
-- [ ] DB error handling
-- [ ] Light aesthetic tuning of GUI (alignments, colors)
-
----
-
-## 📂 Project Structure 
-
-```
-athlete_toolbox/
-│
-├── main.py            # Entry point
-├── db.py              # Database connection and models
-├── auth.py            # Login/Registration logic
-├── gui/
-│    ├── login_window.py
-│    ├── register_window.py
-│    ├── main_app_window.py
-│    ├── workout_window.py
-│    ├── pr_window.py
-│    ├── goals_window.py
-│    └── export_window.py
-├── utils/
-│    ├── garmin_parser.py  # Garmin file parsing logic
-│    └── csv_exporter.py   # Export helpers
-├── assets/              # Icons, logos (optional)
-└── README.md
+```sql
+user_account (user_id, username, email, weight_kg, height_cm, birth_date, created_at)
+workout (user_id, workout_date, type, description, duration_min, calories_burned)
+personal_record (user_id, exercise_name, record_value, unit, record_date)
+goal (user_id, title, target_value, current_value, unit, deadline, achieved)
+user_password (user_id, password_hash, active)
 ```
 
+All foreign keys are **cascading on delete**. Passwords are stored hashed and marked as active/inactive.
+
 ---
 
-## 🧩 Libraries to Install Immediately
+## 🚀 Setup Instructions
+
+### 1. Clone and Set Up Oracle DB
 
 ```bash
-pip install pyqt6 bcrypt pandas fitparse
+git clone https://github.com/your_username/fitness-tracker-oracle.git
+cd fitness-tracker-oracle
 ```
 
-Optionally:
+Create the schema in Oracle:
+
+```sql
+-- In SQL*Plus or similar
+@fitness_schema.sql
+@inserts.sql
+```
+
+### 2. Install Python Requirements
+
 ```bash
-pip install matplotlib
+pip install oracledb
+```
+
+### 3. Configure DB Credentials
+
+Update the DB credentials in:
+
+* `gui.py`
+* `import.py`
+* `export.py`
+
+You can replace them with `getpass.getpass()` for security.
+
+---
+
+## 🛠 Usage
+
+### Run GUI
+
+```bash
+python gui.py
+```
+
+### Import CSV Data
+
+```bash
+python import.py
+```
+
+### Export Data to CSV
+
+```bash
+python export.py
 ```
 
 ---
 
-## 🧠 Smart Notes
+## 📑 Expected CSV Format
 
-- Use **raw SQL** for MVP — no need for heavy ORM.
-- Start with **Login/Register** FIRST — everything depends on users.
-- **Hardcode Garmin imports** at first (one format), expand later.
-- Build **one window fully**, then duplicate for others.
-- Keep **DB schema very simple** — overcomplication = death.
+See [expectedCSV.txt](./expectedCSV.txt) or use exported files as templates.
+
+Example `users.csv`:
+
+```csv
+username,email,weight_kg,height_cm,birth_date
+mimi,mimi@example.com,87.5,180,2003-04-21
+```
 
 ---
+
+## 📌 Notes
+
+* The GUI allows only registration and login.
+* Inserted users automatically get a default hashed password and can be assigned workouts, PRs, and goals via CSV import.
+* Extendable for more analytics or web-based frontend.
+
+---
+
+## 🔒 Security
+
+* Passwords are hashed using SHA-256 before being stored.
+* Use SSL/TLS and environment variables in production.
+
+---
+
+## 🧑‍💻 Author
+
+Built by a CS & Robotics student as a modular backend + GUI solution for tracking personal fitness metrics using Oracle DB.
+
+---
+
+Would you like me to export this as a `README.md` file now?
