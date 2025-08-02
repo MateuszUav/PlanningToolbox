@@ -1,7 +1,7 @@
 ---
 
 # ~~🏋️ Fitness Tracker System (Oracle DB + Python + Tkinter GUI)~~
-#Project abandoned due to lack of contribution and support. 
+# Project abandoned due to lack of contribution and support. 
 
 A modular fitness tracking system built using Python and Oracle SQL. It supports user registration, goal tracking, workout logs, personal records, and data import/export through CSV—all wrapped with a simple Tkinter GUI.
 
